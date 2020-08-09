@@ -1,27 +1,11 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
-import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import PropTypes from 'prop-types';
+import FoodTruckIcon from './FoodTruckIcon';
 
 const propTypes = {
   items: PropTypes.array.isRequired,
 }
-
-const FoodTruck = ({ text }) => (
-  <div style={{
-    color: 'white', 
-    background: 'grey',
-    padding: '15px 10px',
-    display: 'inline-flex',
-    textAlign: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '100%',
-    transform: 'translate(-50%, -50%)'
-  }}>
-    <LocalShippingIcon />
-  </div>
-);
 
 const MapView = (props) => {
   const { items } = props;
@@ -33,7 +17,7 @@ const MapView = (props) => {
           defaultZoom={15}
         >
           {items.map((item, index) => (
-            <FoodTruck
+            <FoodTruckIcon
               lat={item.latitude}
               lng={item.longitude}
               text={item.location}

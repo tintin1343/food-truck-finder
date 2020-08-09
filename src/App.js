@@ -38,6 +38,7 @@ class FoodTruckApp extends Component {
       items: [],
       time: currentDate.format('hh:mm:ss A'),
       view: '1',
+      open: false,
     };
   }
 
