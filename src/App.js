@@ -125,7 +125,7 @@ class FoodTruckApp extends Component {
           day={day}
           view={view}
           handleChange={this.handleChange}
-          handleDayChange={this.handleChange}
+          handleDayChange={this.handleDayChange}
         />
         {!isLoading ?
           (
