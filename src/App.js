@@ -4,6 +4,7 @@ import FormControl from '@material-ui/core/FormControl';
 import injectSheet from 'react-jss';
 import InputLabel from '@material-ui/core/InputLabel';
 import MapView from './components/MapView';
+import EmptyList from './components/EmptyList';
 import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import moment from 'moment';
@@ -30,6 +31,9 @@ const styles = {
     maxWidth: 275,
     height: 275,
     margin: 8,
+  },
+  siteRoot: {
+    margin: 32,
   },
   media: {
     height: 140,
@@ -67,7 +71,7 @@ class FoodTruckApp extends Component {
       fetch(url)
       .then(res => res.json())
       .then((data) => {
-        // console.log('data ', data);
+        console.log('data ', data);
         this.setState({ items: data})
       })
     }
@@ -94,12 +98,13 @@ class FoodTruckApp extends Component {
     const { classes } = this.props;
 
     return (
-      <div>
+      <div className={classes.siteRoot}>
         <h1>Food Trucks</h1>
         <div className={classes.dropdown}> 
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="view-simple">Select View</InputLabel>
             <Select
+              disabled= {!items.length}
               native
               value={view}
               onChange={this.handleChange}
@@ -134,7 +139,10 @@ class FoodTruckApp extends Component {
           </FormControl>
         </div>
         <div className={classes.container}>
-          {view === '1' ? <CardList items={items} /> : <MapView items={items} />}
+          {items.length  
+            ? (view === '1' ? <CardList items={items} /> : <MapView items={items} />) 
+            : <EmptyList />
+          }
         </div>
       </div>
     );
