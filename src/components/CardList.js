@@ -7,6 +7,7 @@ import injectSheet from 'react-jss';
 
 const propTypes = {
   classes: PropTypes.shape({}).isRequired,
+  items: PropTypes.array.isRequired,
 }
 
 const styles = {

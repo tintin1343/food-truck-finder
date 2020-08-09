@@ -1,7 +1,13 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import PropTypes from 'prop-types';
 
-const AnyReactComponent = ({ text }) => (
+const propTypes = {
+  items: PropTypes.array.isRequired,
+}
+
+const FoodTruck = ({ text }) => (
   <div style={{
     color: 'white', 
     background: 'grey',
@@ -13,7 +19,7 @@ const AnyReactComponent = ({ text }) => (
     borderRadius: '100%',
     transform: 'translate(-50%, -50%)'
   }}>
-    FT
+    <LocalShippingIcon />
   </div>
 );
 
@@ -27,7 +33,7 @@ const MapView = (props) => {
           defaultZoom={15}
         >
           {items.map((item, index) => (
-            <AnyReactComponent
+            <FoodTruck
               lat={item.latitude}
               lng={item.longitude}
               text={item.location}
@@ -39,4 +45,5 @@ const MapView = (props) => {
     );
 }
 
+MapView.propTypes = propTypes;
 export default MapView;
