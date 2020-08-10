@@ -1,11 +1,12 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import FoodTruckIcon from './FoodTruckIcon';
+// import FoodTruckIcon from './FoodTruckIcon';
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import GoogleMapReact from 'google-map-react';
+// import GoogleMapReact from 'google-map-react';
+import MapView from './MapView';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -73,7 +74,7 @@ const TruckInfo = (props) => {
               <h3>Lot: {truck.lot}</h3>
             </div>
             <div className={classes.map}>
-              <GoogleMapReact
+              {/* <GoogleMapReact
                 bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAP_API_KEY}}
                 defaultCenter={{lat: parseFloat(truck.latitude), lng: parseFloat(truck.longitude)}}
                 defaultZoom={15}
@@ -83,7 +84,12 @@ const TruckInfo = (props) => {
                   lng={parseFloat(truck.longitude)}
                   text={truck.applicant}
                 />
-              </GoogleMapReact>
+              </GoogleMapReact> */}
+              <MapView 
+                items={[props.truck]} 
+                style={{ height: 400, position: 'relative', width: 400 }}
+                isViewingSingle={true}
+              />
           </div>
         </div>
     </Dialog>

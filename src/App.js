@@ -132,7 +132,7 @@ class FoodTruckApp extends Component {
           (
             <div className={classes.container}>
               {items.length  
-                ? (view === '1' ? <CardList items={items} /> : <MapView items={items} />) 
+                ? (view === '1' ? <CardList items={items} /> : <MapView items={items} isViewingSingle={false} style={{}}/>) 
                 : <EmptyList />
               }
             </div>
