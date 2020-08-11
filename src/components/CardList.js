@@ -38,7 +38,6 @@ const CardList = (props) => {
   };
 
   const handleCardClick = (item) => {
-    console.log('e', item);
     setTruck(item);
     handleClickOpen();
   }
@@ -73,7 +72,6 @@ const CardList = (props) => {
           </Card>
         ))}
         <TruckInfo open={open} handleClose={handleClose} truck={truck} />       
-      }
     </React.Fragment>
   );
 };

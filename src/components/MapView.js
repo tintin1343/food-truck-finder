@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Component} from 'react';
 import {Map, Marker, GoogleApiWrapper, InfoWindow } from 'google-maps-react';
 import PropTypes from 'prop-types';
 
@@ -10,76 +10,88 @@ const propTypes = {
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
-const MapView = (props) => {
-  const [showingInfoWindow, setShowingInfoWindow] = useState(false);
-  const [activeMarker, setActiveMarker] = useState({});
-  const [selectedPlace, setSelectedPlace] = useState({});
+class MapView extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      activeMarker: {},
+      selectedPlace: {},
+      showingInfoWindow: false,
+      markers: [],
+    };
+  }
 
-  // TODO: FIX MAP STYLES. REMOVE HORIZONTAL SCROLL
-  // FIX INFOVIEW DISPLAY/ CSS
-  const { items, isViewingSingle, style } = props;
+  componentDidMount() {
+    const {items} = this.props;
+    this.setState({ markers : items.map((item, index) => (
+        <Marker
+          onClick={this.onMarkerClick}
+          title={item.location}
+          name={item.applicant}
+          position={{lat: parseFloat(item.latitude), lng: parseFloat(item.longitude)}} 
+          key={`marker-${index}`}
+        />
+      ))
+    });
+  }
 
-  const mapCenter = isViewingSingle ? {
-    lat: parseFloat(items[0].latitude),
-    lng: parseFloat(items[0].longitude)
-  } : {
-    lat: parseFloat(process.env.REACT_APP_SF_LAT),
-    lng: parseFloat(process.env.REACT_APP_SF_LNG)
+  onMarkerClick = (props, marker) =>
+    this.setState({
+      activeMarker: marker,
+      selectedPlace: props,
+      showingInfoWindow: true
+    });
+
+  onInfoWindowClose = () =>
+    this.setState({
+      activeMarker: null,
+      showingInfoWindow: false
+    });
+
+  onMapClicked = () => {
+    if (this.state.showingInfoWindow)
+      this.setState({
+        activeMarker: null,
+        showingInfoWindow: false
+      });
   };
 
-  const onMarkerClick = (props, marker, e) => {
-    console.log(props);
-    setActiveMarker(marker);
-    setShowingInfoWindow(true);
-    setSelectedPlace(props);
-  };
+  render(){
+    const {google, items, isViewingSingle, style} = this.props;
 
-  const onInfoWindowClose = () => {
-    setActiveMarker(null);
-    setShowingInfoWindow(false);
-  };
+    const mapCenter = isViewingSingle ? {
+      lat: parseFloat(items[0].latitude),
+      lng: parseFloat(items[0].longitude)
+    } : {
+      lat: parseFloat(process.env.REACT_APP_SF_LAT),
+      lng: parseFloat(process.env.REACT_APP_SF_LNG)
+    };
 
-  const onMapClicked = () => {
-    if (showingInfoWindow)
-    setActiveMarker(null);
-    setShowingInfoWindow(false);
-  };
-
-
-  return (
-      <Map 
-        google={props.google}
-        initialCenter={mapCenter}
-        zoom={13}
-        style={style}
-        onClick={onMapClicked}
-      >
-        {items.map((item, index) => (
-            <Marker
-              onClick={onMarkerClick}
-              title={item.location}
-              name={item.applicant}
-              position={{lat: parseFloat(item.latitude), lng: parseFloat(item.longitude)}} 
-              key={`marker-${index}`}
-            />
-        ))}
-        <InfoWindow 
+    return (
+      <div style={style}>
+        <Map 
+          google={google}
+          initialCenter={mapCenter}
+          zoom={13}
+          onClick={this.onMapClicked}
+        >
+          {this.state.markers}
+          <InfoWindow
             key={`info-window`}
-            marker={activeMarker}
-            onClose={onInfoWindowClose}
-            visible={showingInfoWindow}
+            marker={this.state.activeMarker}
+            onClose={this.onInfoWindowClose}
+            visible={this.state.showingInfoWindow}
           >
             <div>
-                <h1>{selectedPlace.title}</h1>
-                <h3>{selectedPlace.name}</h3>
+              <h1>{this.state.selectedPlace.title}</h1>
+              <h3>{this.state.selectedPlace.name}</h3>
             </div>
           </InfoWindow>
-      </Map>
+        </Map>
+      </div>
   );
-};
+  }
+}
 
 MapView.propTypes = propTypes;
-export default GoogleApiWrapper({
-    apiKey: API_KEY,
-    v: "3.30",
-  })(MapView)
+export default GoogleApiWrapper({ apiKey: API_KEY })(MapView)

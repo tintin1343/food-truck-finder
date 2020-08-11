@@ -13,12 +13,14 @@ const styles = {
   container: {
     display: 'flex',
     flexWrap: 'wrap',
-    margin: 20,
-    justifyContent: 'flex-start',
-  },
-  siteRoot: {
     margin: 32,
+    justifyContent: 'space-around',
   },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    margin: 32,
+  }
 };
 
 
@@ -64,7 +66,7 @@ class FoodTruckApp extends Component {
     const currentDate = this.getCurrentDate();
     const hour = this.getTimeFormat(currentDate.hour());
     const minute = this.getTimeFormat(currentDate.minute());
-    return `${hour}:${minute}`; 
+    return `${hour}:${minute}`;
   }
 
   getCurrentDate = () => {
@@ -120,19 +122,23 @@ class FoodTruckApp extends Component {
     return (
       <div className={classes.siteRoot}>
         <h1>Food Trucks In San Fransisco</h1>
-        <h2>Current Time In San Fransisco: {time}</h2>
-        <Filters
-          items={items}
-          day={day}
-          view={view}
-          handleChange={this.handleChange}
-          handleDayChange={this.handleDayChange}
-        />
+        <div className={classes.header}>
+          <h2>Time In San Fransisco: {time}</h2>
+          <Filters
+            items={items}
+            day={day}
+            view={view}
+            handleChange={this.handleChange}
+            handleDayChange={this.handleDayChange}
+          />
+        </div>
         {!isLoading ?
           (
             <div className={classes.container}>
               {items.length  
-                ? (view === '1' ? <CardList items={items} /> : <MapView items={items} isViewingSingle={false} style={{}}/>) 
+                ? (view === '1' ? <CardList items={items} /> 
+                : <MapView items={items} isViewingSingle={false} style={{ height: 650, width: 1000, position: 'relative' }}/>
+                ) 
                 : <EmptyList />
               }
             </div>

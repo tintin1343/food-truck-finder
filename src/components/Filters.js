@@ -1,27 +1,36 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import injectSheet from 'react-jss';
 import InputLabel from '@material-ui/core/InputLabel';
 import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 
-const styles = {
+const useStyles = makeStyles((theme) => ({
   dropdown: {
     display: 'flex',
-    flexDirection : 'column',
+    // flexDirection : 'column',
     alignContent: 'center',
-    width: 200,
+    width: 400,
   },
   formControl: {
     fontSize: 15,
+    margin: 32,
   },
   siteRoot: {
     margin: 32,
   },
-};
+  selectView: {
+    width: 150,
+  },
+  selectDay: {
+    width: 150,
+  },
+  label: {
+    width: 150,
+  }
+}));
 
 const propTypes = {
-  classes: PropTypes.shape({}).isRequired,
   handleChange: PropTypes.func.isRequired,
   handleDayChange: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
@@ -29,7 +38,6 @@ const propTypes = {
 
 const Filters = (props) => {
   const {
-    classes,
     day,
     handleChange,
     handleDayChange,
@@ -37,10 +45,12 @@ const Filters = (props) => {
     view,
   } = props;
 
+  const classes = useStyles();
+
   return(
     <div className={classes.dropdown}> 
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="view-simple">Select View</InputLabel>
+        <InputLabel className={classes.label} htmlFor="view-simple">Select View</InputLabel>
         <Select
           disabled= {!items.length}
           native
@@ -50,13 +60,14 @@ const Filters = (props) => {
             name: 'view',
             id: 'view-simple',
           }}
+          className={classes.selectView}
         >
           <option aria-label="list" value={1}>List</option>
           <option aria-label="map" value={2}>Map</option>
         </Select>
       </FormControl>
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="day-simple">Select Day</InputLabel>
+        <InputLabel className={classes.label} htmlFor="day-simple">Select Day</InputLabel>
         <Select
           native
           value={day}
@@ -65,6 +76,7 @@ const Filters = (props) => {
             name: 'day',
             id: 'day-simple',
           }}
+          className={classes.selectDay}
         >
           <option aria-label="Sunday" value={0}>Sunday</option>
           <option aria-label="Monday" value={1}>Monday</option>
@@ -80,4 +92,4 @@ const Filters = (props) => {
 }
 
 Filters.propTypes = propTypes;
-export default injectSheet(styles)(Filters);
+export default Filters;
