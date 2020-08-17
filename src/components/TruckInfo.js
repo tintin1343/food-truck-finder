@@ -9,6 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { deepPurple } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -16,20 +17,25 @@ const useStyles = makeStyles((theme) => ({
   },
   displayContainer: {
     display: 'flex',
-    padding: 32,
-    justifyContent: 'space-around',
+    margin: 32,
+    padding: 16,
+    maxWidth: '100vw',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  scrollBody:{
+    backgroundColor: deepPurple['50'],
   },
   title: {
     marginLeft: theme.spacing(2),
     flex: 1,
   },
   text: {
-    height: '100vh',
-    width: '60%',
+    flexGrow: 1,
+    width: '50%',
   },
   map: {
-    height: 400,
-    width: '30%',
+    flexGrow: 1,
   }
 }));
 
@@ -46,7 +52,7 @@ const TruckInfo = (props) => {
   };
 
   return (
-    <Dialog fullScreen open={props.open} onClose={handleClose} TransitionComponent={Transition}>
+    <Dialog fullScreen open={props.open} onClose={handleClose} TransitionComponent={Transition} className={classes.scrollBody}>
       <AppBar className={classes.appBar}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
@@ -62,14 +68,14 @@ const TruckInfo = (props) => {
         </AppBar>
         <div className={classes.displayContainer}>
           <div className={classes.text}>
-              <h1>{truck.applicant}</h1>
-              <h3>Opens at: {truck.start24}</h3>
-              <h3>Closes at: {truck.end24}</h3>
-              <h3>ColdTruck: {truck.coldtruck}</h3>
-              <h3>Location: {truck.location}</h3>
-              <h3>Description: {truck.locationdesc}</h3>
-              <h3>Permit: {truck.permit}</h3>
-              <h3>Lot: {truck.lot}</h3>
+              <h2>{truck.applicant}</h2>
+              <h4>Serves: {truck.optionaltext}</h4>
+              <h5>Open between: {truck.start24} - {truck.end24}</h5>
+              <h5>ColdTruck: {truck.coldtruck}</h5>
+              <h5>Address: {truck.location}, Lot #: {truck.lot}, Block #: {truck.block}</h5>
+              <h5>Location Description: {truck.locationdesc}</h5>
+              <h5>Permit: {truck.permit}</h5>
+              
             </div>
             <div className={classes.map}>
               <MapView 

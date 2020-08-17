@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import TruckInfo from './TruckInfo';
 import injectSheet from 'react-jss';
+import { green } from '@material-ui/core/colors';
 
 const propTypes = {
   classes: PropTypes.shape({}).isRequired,
@@ -18,6 +19,7 @@ const styles = {
     maxWidth: 275,
     height: 275,
     margin: 8,
+    backgroundColor: green['100'],
   },
   media: {
     height: 140,
@@ -49,23 +51,18 @@ const CardList = (props) => {
           <Card className={classes.root} key={index} onClick={() => handleCardClick(item)}>
             <CardActionArea>
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {item.applicant} 
+                <Typography gutterBottom variant="h6" component="h6">
+                  {item.applicant.toUpperCase()} 
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Day: {item.dayofweekstr} 
+                <Typography variant="caption" component="p">
+                  {item.optionaltext}
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Open: {item.start24}
+                <br/>
+                <Typography gutterBottom variant="subtitle1" component="p">
+                  Time: {item.start24} - {item.end24}
                 </Typography>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Close: {item.end24}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {item.location}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {item.locationdesc}
+                <Typography variant="subtitle1" component="p">
+                  Address: {item.location}
                 </Typography>
               </CardContent>
             </CardActionArea>

@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
+import AppBar from '@material-ui/core/AppBar';
 import CardList from './components/CardList';
 import injectSheet from 'react-jss';
 import MapView from './components/MapView';
 import EmptyList from './components/EmptyList';
 import LoadingIndicator from './components/LoadingIndicator';
 import PropTypes from 'prop-types';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import './App.css';
 import Filters from './components/Filters';
+import { deepPurple } from '@material-ui/core/colors';
 
 const styles = {
   container: {
@@ -18,9 +22,13 @@ const styles = {
   },
   header: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     margin: 32,
-  }
+    marginTop: 50,
+  },
+  siteRoot:{
+    backgroundColor: deepPurple['50'],
+  },
 };
 
 
@@ -38,7 +46,7 @@ class FoodTruckApp extends Component {
       day: currentDate.day(),
       isLoading: false,
       items: [],
-      time: currentDate.format('hh:mm:ss A'),
+      // time: currentDate.format('hh:mm:ss A'),
       view: '1',
       open: false,
     };
@@ -46,17 +54,17 @@ class FoodTruckApp extends Component {
 
   componentDidMount(){
     this.getData();
-    this.interval = setInterval(() => this.tick(), 1000);
+    // this.interval = setInterval(() => this.tick(), 1000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
   }
 
-  tick = () => {
-    const currentDate = this.getCurrentDate();
-    this.setState({ time: currentDate.format('hh:mm:ss A')});
-  };
+  // tick = () => {
+  //   const currentDate = this.getCurrentDate();
+  //   this.setState({ time: currentDate.format('dddd, MMMM Do YYYY, hh:mm A')});
+  // };
 
   getTimeFormat = (number) => {
     return number < 10 ? `0${number}` : number;
@@ -70,7 +78,7 @@ class FoodTruckApp extends Component {
   }
 
   getCurrentDate = () => {
-    return moment().zone(process.env.REACT_APP_SF_TIMEZONE_OFFSET);
+    return moment().utcOffset(process.env.REACT_APP_SF_TIMEZONE_OFFSET);
   }
 
   getData = () =>{
@@ -79,13 +87,15 @@ class FoodTruckApp extends Component {
       currentTime,
     } = this.state;
     
-    const url = `https://data.sfgov.org/resource/jjew-r69b.json?dayorder=${day}&$where='${currentTime}' between start24 and end24`;
- 
+    // const url = `https://data.sfgov.org/resource/jjew-r69b.json?dayorder=${day}&$where='${currentTime}' between start24 and end24&$order=applicant ASC`;
+    const url = `https://data.sfgov.org/resource/jjew-r69b.json?dayorder=${day}&$where=start24 <='${currentTime}' and end24 > '${currentTime}'&$order=applicant ASC&$limit=100`;
+    console.log('url ',url);
     try{
       this.setState({ isLoading : true });
       fetch(url)
       .then(res => res.json())
       .then((data) => { 
+        console.log('data ', data);
           this.setState({
           items: data,
           isLoading: false,
@@ -113,7 +123,7 @@ class FoodTruckApp extends Component {
       items,
       view,
       day,
-      time,
+      // time,
       isLoading,
     } = this.state;
 
@@ -121,9 +131,15 @@ class FoodTruckApp extends Component {
 
     return (
       <div className={classes.siteRoot}>
-        <h1>Food Trucks In San Fransisco</h1>
+        <AppBar position="fixed">
+          <Toolbar>
+            <Typography className={classes.title} variant="h5" noWrap>
+              Food Trucks In San Fransisco
+            </Typography>
+          </Toolbar>
+        </AppBar>
         <div className={classes.header}>
-          <h2>Time In San Fransisco: {time}</h2>
+          {/* <h3>{time}</h3> */}
           <Filters
             items={items}
             day={day}
