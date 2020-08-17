@@ -15,11 +15,13 @@ const propTypes = {
 
 const styles = {
   root: {
-    minWidth: 275,
-    maxWidth: 275,
-    height: 275,
+    width: 275,
+    height: 300,
     margin: 8,
     backgroundColor: green['100'],
+  },
+  actionArea:{
+    height: 300,
   },
   media: {
     height: 140,
@@ -50,19 +52,19 @@ const CardList = (props) => {
         items.map((item, index) => (
           <Card className={classes.root} key={index} onClick={() => handleCardClick(item)}>
             <CardActionArea>
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="h6">
+              <CardContent className={classes.actionArea}>
+                <Typography variant="body1" component="h6">
                   {item.applicant.toUpperCase()} 
                 </Typography>
                 <Typography variant="caption" component="p">
                   {item.optionaltext}
                 </Typography>
                 <br/>
-                <Typography gutterBottom variant="subtitle1" component="p">
+                <Typography variant="caption" component="p">
                   Time: {item.start24} - {item.end24}
                 </Typography>
-                <Typography variant="subtitle1" component="p">
-                  Address: {item.location}
+                <Typography variant="caption" component="p">
+                  Address: {item.location.toLowerCase()}
                 </Typography>
               </CardContent>
             </CardActionArea>

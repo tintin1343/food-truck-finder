@@ -87,15 +87,12 @@ class FoodTruckApp extends Component {
       currentTime,
     } = this.state;
     
-    // const url = `https://data.sfgov.org/resource/jjew-r69b.json?dayorder=${day}&$where='${currentTime}' between start24 and end24&$order=applicant ASC`;
     const url = `https://data.sfgov.org/resource/jjew-r69b.json?dayorder=${day}&$where=start24 <='${currentTime}' and end24 > '${currentTime}'&$order=applicant ASC&$limit=100`;
-    console.log('url ',url);
     try{
       this.setState({ isLoading : true });
       fetch(url)
       .then(res => res.json())
       .then((data) => { 
-        console.log('data ', data);
           this.setState({
           items: data,
           isLoading: false,

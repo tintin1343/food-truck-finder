@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Map, Marker, GoogleApiWrapper, InfoWindow } from 'google-maps-react';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 
 const propTypes = {
   items: PropTypes.array.isRequired,
@@ -28,6 +29,8 @@ class MapView extends Component {
           onClick={this.onMarkerClick}
           title={item.location}
           name={item.applicant}
+          time={`${item.start24} - ${item.end24}`}
+          item={item}
           position={{lat: parseFloat(item.latitude), lng: parseFloat(item.longitude)}} 
           key={`marker-${index}`}
         />
@@ -39,13 +42,13 @@ class MapView extends Component {
     this.setState({
       activeMarker: marker,
       selectedPlace: props,
-      showingInfoWindow: true
+      showingInfoWindow: true,
     });
 
   onInfoWindowClose = () =>
     this.setState({
       activeMarker: null,
-      showingInfoWindow: false
+      showingInfoWindow: false,
     });
 
   onMapClicked = () => {
@@ -81,13 +84,20 @@ class MapView extends Component {
             marker={this.state.activeMarker}
             onClose={this.onInfoWindowClose}
             visible={this.state.showingInfoWindow}
-          >
+          >  
             <div>
-              <h1>{this.state.selectedPlace.title}</h1>
-              <h3>{this.state.selectedPlace.name}</h3>
+              <Typography variant="h5" component="h5">
+                {this.state.selectedPlace.name}
+              </Typography>
+              <Typography variant="subtitle1" component="p">
+                Time: {this.state.selectedPlace.time}
+              </Typography>
+              <Typography gutterBottom variant="subtitle1" component="p">
+                Address: {this.state.selectedPlace.title}
+              </Typography>
             </div>
           </InfoWindow>
-        </Map>
+        </Map> 
       </div>
   );
   }
